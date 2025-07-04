@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import AuthLayout from '../../components/layouts/AuthLayout'
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/Inputs/Input';
+import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector';
 import { validateEmail } from '../../utils/helper';
 
 const SignUp = () => {
@@ -16,7 +17,27 @@ const SignUp = () => {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        
+
+        let profileImageUrl = "";
+
+        if (!fullName) {
+            setError("Please enter your name");
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            setError("Please enter a valid email address");
+            return;
+        }
+
+        if (!password) {
+            setError("Please enter the password");
+            return;
+        }
+
+        setError("");
+
+        // SignUp API Call
     };
 
 
@@ -30,7 +51,8 @@ const SignUp = () => {
 
                 <form onSubmit={handleSignUp}>
 
-                    
+                    <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Input
                             value={fullName}
