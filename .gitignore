@@ -23,13 +23,14 @@ dist-ssr/
 build/
 .next/
 out/
+.temp/
 
 # Optional npm cache directory
 .npm/
 
 # dotenv environment variables
 .env
-.env.* 
+.env.*
 
 # IDEs and editors
 .vscode/
@@ -49,6 +50,20 @@ Thumbs.db
 
 # Misc
 *.tgz
+*.bak
+*.zip
+
+# Lock files
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# Uploads or storage folders
+uploads/
+
+# Logs/output from database or scripts
+*.sqlite
+*.db
+
+# Ignore frontend-specific build files if any
+frontend/expense-tracker/dist/
