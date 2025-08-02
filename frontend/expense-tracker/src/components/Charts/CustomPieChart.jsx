@@ -23,7 +23,7 @@ const CustomPieChart = ({
                 <Pie
                     data={data}
                     dataKey="amount"
-                    nameKey="category"
+                    nameKey="name"
                     cx="50%"
                     cy="50%"
                     outerRadius={130}
