@@ -23,7 +23,7 @@ const CustomPieChart = ({
                 <Pie
                     data={data}
                     dataKey="amount"
-                    nameKey="name"
+                    nameKey="category"
                     cx="50%"
                     cy="50%"
                     outerRadius={130}
@@ -35,8 +35,8 @@ const CustomPieChart = ({
                     ))}
                 </Pie>
 
-                <Tooltip content={CustomTooltip}/>
-                <Legend content={CustomLegend}/>
+                <Tooltip content={CustomTooltip} />
+                <Legend content={CustomLegend} />
 
                 {showTextAnchor && (
                     <>

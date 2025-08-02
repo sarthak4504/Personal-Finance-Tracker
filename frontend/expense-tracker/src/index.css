@@ -8,25 +8,24 @@
 } */
 
 :root {
-  --font-display: 'Poppins', sans-serif;
-  --breakpoint-3xl: 1920px;
-  --color-primary: #875cf5;
+    --font-display: 'Poppins', sans-serif;
+    --breakpoint-3xl: 1920px;
+    --color-primary: #875cf5;
 }
 
 
 @layer base {
     html {
-        font-family: var(-- font-display);
+        font-family: var(--font-display);
     }
 
     body {
         background-color: #fcfbfc;
         overflow-x: hidden;
-
     }
 }
 
-.input-box{
+.input-box {
     @apply w-full flex justify-between gap-3 text-sm text-black bg-slate-100 rounded px-4 py-3 mb-4 mt-3 border border-slate-200 outline-none;
 }
 
@@ -35,10 +34,10 @@
 }
 
 
-.card{
+.card {
     @apply bg-white p-6 rounded-2xl shadow-md shadow-gray-100 border border-gray-200/50;
 }
 
 .card-btn {
-  @apply flex items-center gap-3 text-[12px] font-medium text-gray-700 hover:text-purple-500 bg-gray-50 hover:bg-purple-50 px-4 py-1.5 rounded-lg border border-gray-200/50 cursor-pointer;
+    @apply flex items-center gap-3 text-[12px] font-medium text-gray-700 hover:text-purple-500 bg-gray-50 hover:bg-purple-50 px-4 py-1.5 rounded-lg border border-gray-200/50 cursor-pointer;
 }
