@@ -42,4 +42,4 @@ const EmojiPickerPopup = ({ icon, onSelect }) => {
     )
 }
 
-export default EmojiPickerPopup
+export default EmojiPickerPopup;
