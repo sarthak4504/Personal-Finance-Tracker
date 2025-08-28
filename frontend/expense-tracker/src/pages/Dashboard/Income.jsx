@@ -87,7 +87,7 @@ const Income = () => {
     try {
       await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
 
-      setIncomeData((prev) => prev.filter((item) => item._id !== id)); // remove instantly
+      setIncomeData((prev) => prev.filter((item) => item._id !== id)); 
       setOpenDeleteAlert({ show: false, data: null });
       toast.success("Income details deleted successfully");
     } catch (error) {

@@ -6,7 +6,9 @@ import { API_PATHS } from "../../utils/apiPaths";
 import axiosInstance from "../../utils/axiosInstance";
 import AddExpenseForm from "../../components/Expense/AddExpenseForm";
 import Modal from "../../components/Modal";
-import { toast } from "react-toastify"; // ✅ Import toast
+import { toast } from "react-toastify";
+import ExpenseList from "../../components/Expense/ExpenseList";
+import DeleteAlert from "../../components/layouts/DeleteAlert";
 
 const Expense = () => {
   useUserAuth();
@@ -14,6 +16,11 @@ const Expense = () => {
   const [expenseData, setExpenseData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openAddExpenseModal, setOpenAddExpenseModal] = useState(false);
+
+  const [openDeleteAlert, setOpenDeleteAlert] = useState({
+    show: false,
+    data: null,
+  });
 
   // Get All Expense Details
   const fetchExpenseDetails = async () => {
@@ -59,8 +66,8 @@ const Expense = () => {
       });
 
       setOpenAddExpenseModal(false);
-      toast.success("Expense added successfully"); // ✅ Show toast
-      fetchExpenseDetails(); // ✅ Refresh UI
+      toast.success("Expense added successfully");
+      fetchExpenseDetails();
     } catch (error) {
       console.error("Error adding expense:", error.response?.data?.message || error.message);
       toast.error("Failed to add expense.");
@@ -69,15 +76,27 @@ const Expense = () => {
 
   // Handle Delete Expense
   const handleDeleteExpense = async (id) => {
+    console.log("Deleting expense with id:", id);
     try {
-      await axiosInstance.delete(`${API_PATHS.EXPENSE.DELETE_EXPENSE}/${id}`);
-      toast.success("Expense deleted successfully"); // ✅ Show toast
-      fetchExpenseDetails(); // ✅ Refresh UI
+      await axiosInstance.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(id));
+
+      setExpenseData((prev) => prev.filter((item) => item._id !== id));
+      setOpenDeleteAlert({ show: false, data: null });
+      toast.success("Expense deleted successfully");
     } catch (error) {
-      console.error("Error deleting expense:", error.response?.data?.message || error.message);
+      console.error(
+        "Error deleting expense:",
+        error.response?.data?.message || error.message
+      );
       toast.error("Failed to delete expense.");
     }
   };
+
+
+
+  // Handle Download Expense Details
+
+  const handleDownloadExpenseDetails = async () => { };
 
   useEffect(() => {
     fetchExpenseDetails();
@@ -91,9 +110,19 @@ const Expense = () => {
             <ExpenseOverview
               transactions={expenseData}
               onExpenseIncome={() => setOpenAddExpenseModal(true)}
-              onDelete={handleDeleteExpense} // ✅ Pass delete function down
+              onDelete={handleDeleteExpense}
             />
           </div>
+
+          <ExpenseList
+            transactions={expenseData}
+            onDelete={(id) => {
+              setOpenDeleteAlert({ show: true, data: id }); 
+            }}
+            onDownload={handleDownloadExpenseDetails}
+          />
+
+
         </div>
 
         <Modal
@@ -103,6 +132,18 @@ const Expense = () => {
         >
           <AddExpenseForm onAddExpense={handleAddExpense} />
         </Modal>
+
+        <Modal
+          isOpen={openDeleteAlert.show}
+          onClose={() => setOpenDeleteAlert({ show: false, data: null })}
+          title="Delete Expense"
+        >
+          <DeleteAlert
+            content="Are you sure you want to delete this expense?"
+            onDelete={() => handleDeleteExpense(openDeleteAlert.data)}
+          />
+        </Modal>
+
       </div>
     </DashboardLayout>
   );

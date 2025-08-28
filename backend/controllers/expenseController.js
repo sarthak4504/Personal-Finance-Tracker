@@ -45,15 +45,20 @@ exports.getAllExpense = async (req, res) => {
 
 // Delete Expense Source
 exports.deleteExpense = async (req, res) => {
-
     try {
-        await Expense.findByIdAndDelete({ _id: req.params.id });
+        const deletedExpense = await Expense.findByIdAndDelete(req.params.id);
+
+        if (!deletedExpense) {
+            return res.status(404).json({ message: "Expense not found" });
+        }
+
         res.json({ message: "Expense deleted successfully" });
-    }
-    catch (error) {
+    } catch (error) {
+        console.error("Error deleting expense:", error);
         res.status(500).json({ message: "Server Error" });
     }
-}
+};
+
 
 // Download Excel
 exports.downloadExpenseExcel = async (req, res) => {
@@ -61,14 +66,14 @@ exports.downloadExpenseExcel = async (req, res) => {
 
     try {
         const expense = await Expense.find({ userId }).sort({ date: -1 });
-        
-        const data= expense.map(item => ({
+
+        const data = expense.map(item => ({
             category: item.category,
             Amount: item.amount,
             Date: item.date,
         }));
 
-        const wb= xlsx.utils.book_new();
+        const wb = xlsx.utils.book_new();
         const ws = xlsx.utils.json_to_sheet(data);
         xlsx.utils.book_append_sheet(wb, ws, "Expense");
         xlsx.writeFile(wb, "expense_details.xlsx");
