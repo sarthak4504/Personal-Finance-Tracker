@@ -87,7 +87,7 @@ const Income = () => {
     try {
       await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
 
-      setIncomeData((prev) => prev.filter((item) => item._id !== id)); 
+      setIncomeData((prev) => prev.filter((item) => item._id !== id));
       setOpenDeleteAlert({ show: false, data: null });
       toast.success("Income details deleted successfully");
     } catch (error) {
@@ -100,7 +100,29 @@ const Income = () => {
   };
 
 
-  const handleDownloadIncomeDetails = async () => { };
+  const handleDownloadIncomeDetails = async () => {
+    try {
+      const response = await axiosInstance.get(
+        API_PATHS.INCOME.DOWNLOAD_INCOME,
+        {
+          responseType: "blob",
+        }
+      );
+
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "income_details.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading income details:", error);
+      toast.error("Failed to download income details. Please try again.");
+    }
+  };
 
   useEffect(() => {
     fetchIncomeDetails();
